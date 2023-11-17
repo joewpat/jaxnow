@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jax NOW - Events Calendar</title>
+</head>
+<body>
+    <h1>Jax Now Events Calendar</h1>
+    <ul>
+        {% for event in events %}
+            <li>{{ event.title }} - {{ event.date }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add Event</h2>
+    <form id="addEventForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+        <button type="submit">Add Event</button>
+    </form>
+
+    <script>
+        document.getElementById("addEventForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const title = document.getElementById("title").value;
+            const date = document.getElementById("date").value;
+
+            fetch("/api/events", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ title, date }),
+            })
+            .then(response => response.json())
+            .then(newEvent => {
+                // Update the UI with the new event
+                const eventList = document.querySelector("ul");
+                const li = document.createElement("li");
+                li.textContent = `${newEvent.title} - ${newEvent.date}`;
+                eventList.appendChild(li);
+
+                // Clear the form
+                document.getElementById("title").value = "";
+                document.getElementById("date").value = "";
+            });
+        });
+    </script>
+</body>
+</html>
