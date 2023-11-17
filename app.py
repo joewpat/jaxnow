@@ -18,9 +18,10 @@ with app.app_context():
     db.create_all()
 
 # Dummy data for initial testing
+#disabled to avoid seeding DB every time app is started
 events = [
-    {"title": "Event 1", "date": "2023-11-16"},
-    {"title": "Event 2", "date": "2023-11-17"},
+#    {"title": "Event 1", "date": "2023-11-16"},
+#    {"title": "Event 2", "date": "2023-11-17"},
 ]
 
 # Seed the initial data into the database
